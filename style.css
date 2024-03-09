@@ -5,14 +5,14 @@
 
 #game{
     display: grid;
-    grid-template-columns: repeat(auto-fill, 80px);
+    grid-template-columns: repeat(16, 80px);
     grid-template-rows: repeat(8, 80px);
   
     justify-content: center;
     gap: 10px;
     transition: 300ms;
   
-  
+    padding: 0px;
   
 }
 
@@ -21,6 +21,12 @@
     transition: 0.3s all;
 }
 .block-random{
+  
+    width: 80px;
+    height: 80px;
+    background: #777777;
+}
+.block-randoms{
   
     width: 80px;
     height: 80px;
