@@ -1,0 +1,28 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+#game{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 80px);
+    grid-template-rows: repeat(8, 80px);
+  
+    justify-content: center;
+    gap: 10px;
+    transition: 300ms;
+  
+  
+  
+}
+
+.block-rute{
+    background: red;
+    transition: 0.3s all;
+}
+.block-random{
+  
+    width: 80px;
+    height: 80px;
+    background: #777777;
+}
