@@ -1,19 +1,28 @@
 
 const parentElement = document.querySelector('#game'); // canvas
+const imageState = [ 'one.svg', 'one.svg', 'one.svg', 'one.svg', 'one.svg', 'two.svg', 'three.svg', 'for.svg' ];
 
+// let score = document.querySelector('#score');
 
 const items = []; // все елементы
 const numberGridY = [1, 2, 3, 4, 5, 6, 7, 8];
 const numberGridX = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
-let countX = 1;
-let countY = 1;
 
 
+const configInterface = {
+    gameScore: 0,  //Счет
+    // Типы кристаллов: 
+    greenJewel: 0,
+    yellowJewel: 0,
+    redJewel: 0,
 
+}
 const config = {
     width: 80,
-    height: 80
+    height: 80,
+    countX: 1,
+    countY: 1
 }   
 
 const configRandomBlock = {
@@ -21,39 +30,60 @@ const configRandomBlock = {
     gridY: 0
 }
 
+let renderXlang = 0;
+let renderYlang = 1;
 
 
 
 
-const element = document.createElement('div');
+// score.innerHTML = configInterface.gameScore;
+
+
+
+
+
+
+const element = document.createElement('img');
 element.classList.add('block-rute');
+element.setAttribute('src', './images/animated-pers/one.svg');
+
+
+
+
 parentElement.append(element);
 
 element.style.width = `${config.width}px`;
 element.style.height = `${config.height}px`;
 
+//Вывод всех функций
+animatePers(element, imageState);
+
 document.addEventListener("keydown", (e) =>{
 
     if(e.code === "ArrowRight"){
-        countX === 16 ? countX = 1 : countX++;
+        config.countX === 16 ? config.countX = 1 : config.countX++;
         settingsPositionX(element);
     } else if(e.code === "ArrowLeft"){
-        countX === 1 ? countX = 16 : countX--;
+        config.countX === 1 ? config.countX = 16 : config.countX--;
         settingsPositionX(element);
     } else if(e.code === "ArrowDown"){
-        countY === 8 ? countY = 1 : countY++;
+        config.countY === 8 ? config.countY = 1 : config.countY++;
         settingsPositionY(element);
     } else if(e.code === "ArrowUp"){
-        countY === 1 ? countY = 8 : countY--;
+        config.countY === 1 ? config.countY = 8 : config.countY--;
         settingsPositionY(element);
     }
    
-    if(countX === configRandomBlock.gridX && countY === configRandomBlock.gridY){
-        parentElement.childNodes[2].remove();
-        randomBlockRender(parentElement)
+    if(config.countX === configRandomBlock.gridX && config.countY === configRandomBlock.gridY){
+        // configInterface.gameScore++;
+        // score.innerHTML = configInterface.gameScore;
 
-        console.log(configRandomBlock.gridX);
-        console.log(configRandomBlock.gridY);
+        const renderRandomBlock =  document.querySelector('.block')
+        if(renderRandomBlock){
+            renderRandomBlock.remove();
+        }
+        randomBlockRender(parentElement)
+     
     }
  
 
@@ -63,8 +93,10 @@ document.addEventListener("keydown", (e) =>{
 
 
 
-function settingsPositionX(elem){ elem.style.gridColumn = `${countX} / 16`; }
-function settingsPositionY(elem){ elem.style.gridRow = `${countY} / 8`; }
+
+
+function settingsPositionX(elem){ elem.style.gridColumn = `${config.countX} / 16`; }
+function settingsPositionY(elem){ elem.style.gridRow = `${config.countY} / 8`; }
 settingsPositionX(element);
 settingsPositionY(element);
 
@@ -86,7 +118,9 @@ function randomBlockRender(parent){
     configRandomBlock.gridY = randomY;
     const block = document.createElement('div');
    
-    block.classList.add('block-random');
+    block.classList.add('block');
+    // block.innerHTML = `<div class="block-random"></div>`;
+    block.innerHTML = `<img id="greenJewel" class="block-random" src="./images/crystals-type/crystal-green.svg">`;
     parent.append(block);
    
     block.style.gridColumn = `${configRandomBlock.gridX} / 16`;
@@ -97,6 +131,45 @@ function randomBlockRender(parent){
     // console.log(configRandomBlock.gridY);
 }
 randomBlockRender(parentElement)
+
+
+
+function animatePers(elem, url){
+    let indificator = 0;
+    setInterval(()=>{
+        if(indificator < url.length){
+            elem.setAttribute('src', `./images/animated-pers/${url[indificator]}`);
+            indificator = indificator + 1;
+            if(indificator === url.length){
+                return indificator = 0;
+            }
+        }
+    }, 150);
+}
+
+
+
+renderLangScape(parentElement, renderXlang, renderYlang);
+
+function renderLangScape(parent, x, y){
+    for(let i = 0; i <= 16 ; i++) {
+        const rowMax = 8;
+        const renderBlock = document.createElement('img');
+        renderBlock.classList.add('ground');
+        renderBlock.setAttribute('src', './images/landscape/green-world.svg');
+        parent.append(renderBlock);
+    
+        // for(let j = 0; j <= i; )
+     
+        renderBlock.style.gridColumn = `${x} / 16`;
+        renderBlock.style.gridRow = `${y} / 16`;
+
+       x++;
+    }   
+}
+
+
+
 
 
 
