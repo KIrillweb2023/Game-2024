@@ -20,8 +20,8 @@ const configInterface = {
 
 }
 const config = {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     countX: 1,
     countY: 1
 }   
@@ -48,8 +48,6 @@ const configRandomBlock = {
 const element = document.createElement('img');
 element.classList.add('block-rute');
 element.setAttribute('src', './images/animated-pers/one.svg');
-
-
 
 
 parentElement.append(element);
@@ -147,38 +145,6 @@ function animatePers(elem, url){
 
 
 
-
-
-
-// let renderXlang = 16;
-// let renderYlang = 1;   
-
-
-// for(let x = 1; x <= renderXlang; x++){
-//     const renderBlock = document.createElement('img');
-//     renderBlock.classList.add('ground');
-//     renderBlock.setAttribute('src', './images/landscape/green-world.svg');
-//     parentElement.append(renderBlock);
-
-   
-
-   
-     
-   
-//     renderBlock.style.gridColumn = `${x} / 16`;
-//     renderBlock.style.gridRow = `${renderYlang} / 8`;
-
-//     if(x === 16){
-//         // renderYlang++;
-//         for(let j = 1; j <= x; j++){
-//             renderBlock.style.gridColumn = `${j} / 16`;
-//             renderBlock.style.gridRow = `${renderYlang} / 8`;
-//         }
-//     }
-    
-//  }
-
-
 function renderLangscape(gridX){ 
     for (let i = 1; i <= gridX.length; i++) {
         for (let j = 1; j <= 8; j++) {
@@ -193,6 +159,16 @@ function renderLangscape(gridX){
             renderBlock.style.gridRow = `${j} / 8`;
 
             // console.log(j); 
+
+            if(j === 8){
+                renderBlock.setAttribute('src', './images/landscape/bottom-ground.svg');
+            }
+            if(i === 1){
+                renderBlock.setAttribute('src', './images/landscape/left-ground.svg');
+            }
+            if(j === 8 && i === 1){
+                renderBlock.setAttribute('src', './images/landscape/bottom-left-ground.svg');
+            }
         }
     }
 }
