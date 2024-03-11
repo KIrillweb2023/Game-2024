@@ -10,6 +10,7 @@ const numberGridX = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 
 
+
 const configInterface = {
     gameScore: 0,  //Счет
     // Типы кристаллов: 
@@ -25,13 +26,14 @@ const config = {
     countY: 1
 }   
 
+
+
 const configRandomBlock = {
     gridX: 0,
     gridY: 0
 }
 
-let renderXlang = 0;
-let renderYlang = 1;
+
 
 
 
@@ -75,9 +77,6 @@ document.addEventListener("keydown", (e) =>{
     }
    
     if(config.countX === configRandomBlock.gridX && config.countY === configRandomBlock.gridY){
-        // configInterface.gameScore++;
-        // score.innerHTML = configInterface.gameScore;
-
         const renderRandomBlock =  document.querySelector('.block')
         if(renderRandomBlock){
             renderRandomBlock.remove();
@@ -85,9 +84,6 @@ document.addEventListener("keydown", (e) =>{
         randomBlockRender(parentElement)
      
     }
- 
-
-
 })
 
 
@@ -149,41 +145,56 @@ function animatePers(elem, url){
 
 
 
-renderLangScape(parentElement, renderXlang, renderYlang);
 
-function renderLangScape(parent, x, y){
-    for(let i = 0; i <= 16 ; i++) {
-        const rowMax = 8;
-        const renderBlock = document.createElement('img');
-        renderBlock.classList.add('ground');
-        renderBlock.setAttribute('src', './images/landscape/green-world.svg');
-        parent.append(renderBlock);
-    
-        // for(let j = 0; j <= i; )
+
+
+
+
+// let renderXlang = 16;
+// let renderYlang = 1;   
+
+
+// for(let x = 1; x <= renderXlang; x++){
+//     const renderBlock = document.createElement('img');
+//     renderBlock.classList.add('ground');
+//     renderBlock.setAttribute('src', './images/landscape/green-world.svg');
+//     parentElement.append(renderBlock);
+
+   
+
+   
      
-        renderBlock.style.gridColumn = `${x} / 16`;
-        renderBlock.style.gridRow = `${y} / 16`;
+   
+//     renderBlock.style.gridColumn = `${x} / 16`;
+//     renderBlock.style.gridRow = `${renderYlang} / 8`;
 
-       x++;
-    }   
+//     if(x === 16){
+//         // renderYlang++;
+//         for(let j = 1; j <= x; j++){
+//             renderBlock.style.gridColumn = `${j} / 16`;
+//             renderBlock.style.gridRow = `${renderYlang} / 8`;
+//         }
+//     }
+    
+//  }
+
+
+function renderLangscape(gridX){ 
+    for (let i = 1; i <= gridX.length; i++) {
+        for (let j = 1; j <= 8; j++) {
+            const renderBlock = document.createElement('img');
+            renderBlock.classList.add('ground');
+            renderBlock.setAttribute('src', './images/landscape/green-world.svg');
+            parentElement.append(renderBlock);
+
+
+            // сделал динамическое подставление итератора в стили, иначе рендрит с хер чем попало
+            renderBlock.style.gridColumn = `${i} / 16`;
+            renderBlock.style.gridRow = `${j} / 8`;
+
+            // console.log(j); 
+        }
+    }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+renderLangscape(numberGridX);
