@@ -1,6 +1,7 @@
 
 const parentElement = document.querySelector('#game'); // canvas
-const imageState = [ 'one.svg', 'one.svg', 'one.svg', 'one.svg', 'one.svg', 'two.svg', 'three.svg', 'for.svg' ];
+const imageState = [  'one.svg', 'one.svg', 'one.svg', 'one.svg', 'two.svg', 'three.svg' ];
+const imageStarsState = [  'one-star-yellow.svg', 'two-star-yellow.svg', 'two-star-yellow.svg' ];
 
 // let score = document.querySelector('#score');
 
@@ -20,8 +21,8 @@ const configInterface = {
 
 }
 const config = {
-    width: 60,
-    height: 60,
+    width: 80,
+    height: 80,
     countX: 1,
     countY: 1
 }   
@@ -38,25 +39,16 @@ const configRandomBlock = {
 
 
 
-// score.innerHTML = configInterface.gameScore;
 
-
-
-
-
-
-const element = document.createElement('img');
+const element = document.createElement('div');
 element.classList.add('block-rute');
-element.setAttribute('src', './images/animated-pers/one.svg');
-
-
+element.innerHTML = `<img class="block-rute-image" src="./images/animated-pers/one.svg" alt="charaters">`;
 parentElement.append(element);
 
 element.style.width = `${config.width}px`;
 element.style.height = `${config.height}px`;
 
-//Вывод всех функций
-animatePers(element, imageState);
+animatePers(document.querySelector('.block-rute-image'), imageState, "./images/animated-pers", 250);
 
 document.addEventListener("keydown", (e) =>{
 
@@ -114,7 +106,7 @@ function randomBlockRender(parent){
    
     block.classList.add('block');
     // block.innerHTML = `<div class="block-random"></div>`;
-    block.innerHTML = `<img id="greenJewel" class="block-random" src="./images/crystals-type/crystal-green.svg">`;
+    block.innerHTML = `<img id="greenJewel" class="block-random" src="./images/crystals-type/one-star-yellow.svg">`;
     parent.append(block);
    
     block.style.gridColumn = `${configRandomBlock.gridX} / 16`;
@@ -123,23 +115,25 @@ function randomBlockRender(parent){
     
     // console.log(configRandomBlock.gridX);
     // console.log(configRandomBlock.gridY);
+    animatePers(document.querySelector('.block-random'), imageStarsState , "./images/crystals-type", 500);
 }
 randomBlockRender(parentElement)
 
 
-
-function animatePers(elem, url){
+// animatePers(document.querySelector('.block-random'), imageStarsState);
+function animatePers(elem, arr, strUrl, configSeconds){
     let indificator = 0;
     setInterval(()=>{
-        if(indificator < url.length){
-            elem.setAttribute('src', `./images/animated-pers/${url[indificator]}`);
+        if(indificator < arr.length){
+            elem.setAttribute('src', `${strUrl}/${arr[indificator]}`);
             indificator = indificator + 1;
-            if(indificator === url.length){
+            if(indificator === arr.length){
                 return indificator = 0;
             }
         }
-    }, 150);
+    }, configSeconds);
 }
+
 
 
 
@@ -150,7 +144,7 @@ function renderLangscape(gridX){
         for (let j = 1; j <= 8; j++) {
             const renderBlock = document.createElement('img');
             renderBlock.classList.add('ground');
-            renderBlock.setAttribute('src', './images/landscape/green-world.svg');
+            renderBlock.setAttribute('src', './images/landscape/grass-ground.svg');
             parentElement.append(renderBlock);
 
 
@@ -167,7 +161,7 @@ function renderLangscape(gridX){
                 renderBlock.setAttribute('src', './images/landscape/left-ground.svg');
             }
             if(j === 8 && i === 1){
-                renderBlock.setAttribute('src', './images/landscape/bottom-left-ground.svg');
+                renderBlock.setAttribute('src', './images/landscape/left-bottom-ground.svg');
             }
         }
     }
