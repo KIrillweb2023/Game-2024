@@ -1,9 +1,8 @@
-
 const parentElement = document.querySelector('#game'); // canvas
 const imageState = [  'one.svg', 'one.svg', 'one.svg', 'one.svg', 'two.svg', 'three.svg' ];
 const imageStarsState = [  'one-star-yellow.svg', 'two-star-yellow.svg', 'two-star-yellow.svg' ];
 
-// let score = document.querySelector('#score');
+
 
 const items = []; // все елементы
 const numberGridY = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -24,6 +23,12 @@ const config = {
     countX: 1,
     countY: 1
 }   
+
+
+const maxColAndRow = {
+    columnMax: 16,
+    rowMax: 8
+}
 
 const configRandomBlock = {
     gridX: 0,
@@ -70,15 +75,14 @@ document.addEventListener("keydown", (e) =>{
 
 
 
-function settingsPositionX(elem){ elem.style.gridColumn = `${config.countX} / 16`; }
-function settingsPositionY(elem){ elem.style.gridRow = `${config.countY} / 8`; }
+function settingsPositionX(elem){ elem.style.gridColumn = `${config.countX} / ${maxColAndRow.columnMax}`; }
+function settingsPositionY(elem){ elem.style.gridRow = `${config.countY} / ${maxColAndRow.rowMax}`; }
 settingsPositionX(element);
 settingsPositionY(element);
 
 
 
 function randomBlockRender(parent){
-
     let randomX = Math.floor(Math.random() * numberGridX.length);
     let randomY = Math.floor(Math.random() * numberGridY.length);
 
@@ -92,22 +96,16 @@ function randomBlockRender(parent){
     const block = document.createElement('div');
    
     block.classList.add('block');
-    // block.innerHTML = `<div class="block-random"></div>`;
     block.innerHTML = `<img id="greenJewel" class="block-random" src="./icons/star-icons/one-star-yellow.svg">`;
     parent.append(block);
    
-    block.style.gridColumn = `${configRandomBlock.gridX} / 16`;
-    block.style.gridRow = `${configRandomBlock.gridY} / 8`;
+    block.style.gridColumn = `${configRandomBlock.gridX} / ${maxColAndRow.columnMax}`;
+    block.style.gridRow = `${configRandomBlock.gridY} / ${maxColAndRow.rowMax}`;
 
-    
-    // console.log(configRandomBlock.gridX);
-    // console.log(configRandomBlock.gridY);
     animatePers(document.querySelector('.block-random'), imageStarsState , "./icons/star-icons", 500);
 }
 randomBlockRender(parentElement)
 
-
-// animatePers(document.querySelector('.block-random'), imageStarsState);
 function animatePers(elem, arr, strUrl, configSeconds){
     let indificator = 0;
     setInterval(()=>{
@@ -133,8 +131,8 @@ function renderLangscape(gridX){
 
 
             // сделал динамическое подставление итератора в стили, иначе рендрит с хер чем попало
-            renderBlock.style.gridColumn = `${i} / 16`;
-            renderBlock.style.gridRow = `${j} / 8`;
+            renderBlock.style.gridColumn = `${i} / ${maxColAndRow.columnMax}`;
+            renderBlock.style.gridRow = `${j} / ${maxColAndRow.rowMax}`;
 
             // console.log(j); 
 
