@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     const imageRandomUrl = [ 'red-stars/one-red-star.svg', 'yellow-stars/one-star-yellow.svg', 'purple-stars/one-star-purple.svg' ];
 
+    const urlStarsPath = {
+        pathYellow: [ 'one-star-yellow.svg', 'one-star-yellow.svg', 'two-star-yellow.svg'],
+        pathRed: [ 'one-red-star.svg', 'one-red-star.svg', 'two-red-star.svg'],
+        pathPurple: [ 'one-star-purple.svg', 'one-star-purple.svg', 'two-star-purple.svg' ]
+    }
+
 
 
     const items = []; // все елементы
@@ -69,10 +75,7 @@ document.addEventListener('DOMContentLoaded', () =>{
                
                 renderRandomBlock.remove()
             }
-            
-
-           
-            // randomColorStars(document.querySelector('#randomBlock'), imageRandomUrl);
+        
 
             randomBlockRender(parentElement, imageRandomUrl);
         }
@@ -111,7 +114,18 @@ document.addEventListener('DOMContentLoaded', () =>{
         block.style.gridColumn = `${configRandomBlock.gridX} / ${maxColAndRow.columnMax}`;
         block.style.gridRow = `${configRandomBlock.gridY} / ${maxColAndRow.rowMax}`;
 
-        // animatePers(document.querySelector('.block-random'), imageStarsState , "./icons/star-icons/yellow-stars", 500);
+
+
+
+        const atributesRandomBlock = document.querySelector("#randomBlock").getAttribute('src');
+        
+        if(atributesRandomBlock === './icons/star-icons/yellow-stars/one-star-yellow.svg') {
+        animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathYellow , "./icons/star-icons/yellow-stars", 500);
+        } else if(atributesRandomBlock === './icons/star-icons/red-stars/one-red-star.svg'){
+        animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathRed , "./icons/star-icons/red-stars", 500);
+        } else if(atributesRandomBlock === './icons/star-icons/purple-stars/one-star-purple.svg') {
+        animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathPurple , "./icons/star-icons/purple-stars", 500);
+        }
     }
    
     randomBlockRender(parentElement, imageRandomUrl)
