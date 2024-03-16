@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     const imageStarsState = [  'one-star-yellow.svg', 'two-star-yellow.svg', 'two-star-yellow.svg' ];
 
     const imageRandomUrl = [ 'red-stars/one-red-star.svg', 'yellow-stars/one-star-yellow.svg', 'purple-stars/one-star-purple.svg' ];
-    // const randomUrl = Math.floor(Math.random() * imageRandomUrl.length)
-    // console.log(randomUrl);
+
 
 
     const items = []; // все елементы
@@ -64,14 +63,18 @@ document.addEventListener('DOMContentLoaded', () =>{
         }
     
         if(config.countX === configRandomBlock.gridX && config.countY === configRandomBlock.gridY){
-            // randomColorStars(document.querySelector('.block #randomBlock'), imageRandomUrl);
+           
             const renderRandomBlock =  document.querySelector('.block')
-            // if(renderRandomBlock)
-            renderRandomBlock ? renderRandomBlock.remove() : renderRandomBlock;
+            if(renderRandomBlock){
+               
+                renderRandomBlock.remove()
+            }
+            
 
            
+            // randomColorStars(document.querySelector('#randomBlock'), imageRandomUrl);
 
-            randomBlockRender(parentElement)
+            randomBlockRender(parentElement, imageRandomUrl);
         }
         settingsPositionX(element);
         settingsPositionY(element);
@@ -84,11 +87,13 @@ document.addEventListener('DOMContentLoaded', () =>{
     settingsPositionX(element);
     settingsPositionY(element);
 
+   
 
-
-    function randomBlockRender(parent){
+    function randomBlockRender(parent, arr){
         let randomX = Math.floor(Math.random() * numberGridX.length);
         let randomY = Math.floor(Math.random() * numberGridY.length);
+
+        let id = Math.floor(Math.random() * arr.length);
 
         randomX === 0 ? randomX++ : randomX;
         randomY === 0 ? randomY++ : randomY;
@@ -96,40 +101,21 @@ document.addEventListener('DOMContentLoaded', () =>{
         configRandomBlock.gridX = randomX;
         configRandomBlock.gridY = randomY;
 
-        
-
-       
-        
-
+    
+      
         const block = document.createElement('div');
         block.classList.add('block');
-        block.innerHTML = `<img id="randomBlock" class="block-random" src="./icons/star-icons/yellow-stars/one-star-yellow.svg">`;
+        block.innerHTML = `<img id="randomBlock" class="block-random" src="./icons/star-icons/${arr[id]}">`;
         parent.append(block);
-
-      
     
         block.style.gridColumn = `${configRandomBlock.gridX} / ${maxColAndRow.columnMax}`;
         block.style.gridRow = `${configRandomBlock.gridY} / ${maxColAndRow.rowMax}`;
 
-        animatePers(document.querySelector('.block-random'), imageStarsState , "./icons/star-icons/yellow-stars", 500);
-
-
-
-        function randomColorStars(block, arr){
-            let id = 0;
-            if(id < arr.length){
-                block.setAttribute('src', `./icons/star-icons/${arr[id]}`);
-                // var finalyPath = `${imageRandomUrl[id]}`;
-                id = id + 1;
-                if(id === arr.length){
-                    return id = 0;
-                }
-            
-            }
-        }
+        // animatePers(document.querySelector('.block-random'), imageStarsState , "./icons/star-icons/yellow-stars", 500);
     }
-    randomBlockRender(parentElement)
-
+   
+    randomBlockRender(parentElement, imageRandomUrl)
+   
     function animatePers(elem, arr, strUrl, configSeconds){
         let indificator = 0;
         setInterval(()=>{
