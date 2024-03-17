@@ -2,15 +2,23 @@ document.addEventListener('DOMContentLoaded', () =>{
         
     const parentElement = document.querySelector('#game'); // canvas
     const imageState = [  'one.svg', 'one.svg', 'one.svg', 'one.svg', 'two.svg', 'three.svg' ];
-    const imageStarsState = [  'one-star-yellow.svg', 'two-star-yellow.svg', 'two-star-yellow.svg' ];
 
-    const imageRandomUrl = [ 'red-stars/one-red-star.svg', 'yellow-stars/one-star-yellow.svg', 'purple-stars/one-star-purple.svg' ];
+    const imageRandomUrl = [ 'red-stars/one-red-star.svg', 'yellow-stars/one-star-yellow.svg', 'blue-stars/one-blue-star.svg', 'orange-stars/one-orange-star.svg', 'purple-stars/one-star-purple.svg' ];
 
     const urlStarsPath = {
         pathYellow: [ 'one-star-yellow.svg', 'one-star-yellow.svg', 'two-star-yellow.svg'],
         pathRed: [ 'one-red-star.svg', 'one-red-star.svg', 'two-red-star.svg'],
-        pathPurple: [ 'one-star-purple.svg', 'one-star-purple.svg', 'two-star-purple.svg' ]
+        pathPurple: [ 'one-star-purple.svg', 'one-star-purple.svg', 'two-star-purple.svg' ],
+        pathBlue: [ 'one-blue-star.svg', 'one-blue-star.svg', 'two-blue-star.svg' ],
+        pathOrange: [ 'one-orange-star.svg', 'one-orange-star.svg', 'two-orange-star.svg' ]
     }
+
+
+    const yellowStar = './icons/star-icons/yellow-stars/one-star-yellow.svg';
+    const redStar = './icons/star-icons/red-stars/one-red-star.svg';
+    const purpleStar = './icons/star-icons/purple-stars/one-star-purple.svg';
+    const blueStar = './icons/star-icons/blue-stars/one-blue-star.svg';
+    const orangeStar = './icons/star-icons/orange-stars/one-orange-star.svg';
 
 
 
@@ -33,6 +41,13 @@ document.addEventListener('DOMContentLoaded', () =>{
         countX: 1,
         countY: 1
     }   
+
+
+    const configLevel = {
+        maxWidthLevel: 300,
+        widthUp: 0,
+        countUp: 0 
+    }
 
 
     const maxColAndRow = {
@@ -69,15 +84,24 @@ document.addEventListener('DOMContentLoaded', () =>{
         }
     
         if(config.countX === configRandomBlock.gridX && config.countY === configRandomBlock.gridY){
-           
-            const renderRandomBlock =  document.querySelector('.block')
+            const renderRandomBlock = document.querySelector('.block')
             if(renderRandomBlock){
-               
-                renderRandomBlock.remove()
+                renderRandomBlock.remove();
             }
-        
 
-            randomBlockRender(parentElement, imageRandomUrl);
+            // const randomBlockMath = document.querySelector("#randomBlock").getAttribute('src');
+
+            configLevel.widthUp += 30;
+            stateWidthActive(configLevel.widthUp);
+            if(configLevel.widthUp >= configLevel.maxWidthLevel){
+                configLevel.widthUp = configLevel.maxWidthLevel - configLevel.widthUp;
+                configLevel.countUp++;
+               
+                upTextLevel(configLevel.countUp);
+                
+            }
+
+            randomBlockRender(parentElement, imageRandomUrl, yellowStar, redStar, purpleStar, blueStar, orangeStar);
         }
         settingsPositionX(element);
         settingsPositionY(element);
@@ -92,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 
    
 
-    function randomBlockRender(parent, arr){
+    function randomBlockRender(parent, arr, yellow, red, purple, blue, orange){
         let randomX = Math.floor(Math.random() * numberGridX.length);
         let randomY = Math.floor(Math.random() * numberGridY.length);
 
@@ -119,16 +143,22 @@ document.addEventListener('DOMContentLoaded', () =>{
 
         const atributesRandomBlock = document.querySelector("#randomBlock").getAttribute('src');
         
-        if(atributesRandomBlock === './icons/star-icons/yellow-stars/one-star-yellow.svg') {
-        animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathYellow , "./icons/star-icons/yellow-stars", 500);
-        } else if(atributesRandomBlock === './icons/star-icons/red-stars/one-red-star.svg'){
-        animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathRed , "./icons/star-icons/red-stars", 500);
-        } else if(atributesRandomBlock === './icons/star-icons/purple-stars/one-star-purple.svg') {
-        animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathPurple , "./icons/star-icons/purple-stars", 500);
+        if(atributesRandomBlock === yellow) {
+            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathYellow , "./icons/star-icons/yellow-stars", 500);
+        } else if(atributesRandomBlock === red){
+            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathRed , "./icons/star-icons/red-stars", 500);
+        } else if(atributesRandomBlock === purple) {
+            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathPurple , "./icons/star-icons/purple-stars", 500);
+        } else if(atributesRandomBlock === blue) {
+            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathBlue , "./icons/star-icons/blue-stars", 500);
+        } else if(atributesRandomBlock === orange) {
+            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathOrange , "./icons/star-icons/orange-stars", 500);
         }
     }
    
-    randomBlockRender(parentElement, imageRandomUrl)
+    randomBlockRender(parentElement, imageRandomUrl, yellowStar, redStar, purpleStar, blueStar, orangeStar);
+
+
    
     function animatePers(elem, arr, strUrl, configSeconds){
         let indificator = 0;
@@ -169,5 +199,52 @@ document.addEventListener('DOMContentLoaded', () =>{
     }
 
     renderLangscape(maxColAndRow.columnMax);
-})
+
+
+
+    function levelUp(parent, widthLevel, count){
+        const levelBlock = document.createElement("div");
+        levelBlock.classList.add('wrapper');
+        levelBlock.innerHTML = ` 
+            <h4 class="wrapper__level">LEVEL <span id="countLevel">${count}</span></h4>
+            <div class="wrapper__progress"></div>
+        `;
+        parent.append(levelBlock);
+
+        const levelProgress = document.querySelector(".wrapper__progress");
+        levelProgress.style.width = `${widthLevel}px`;
+    }
+
+    function stateWidthActive(widthLevel){
+        const levelProgress = document.querySelector(".wrapper__progress");
+        levelProgress.style.width = `${widthLevel}px`;
+    }
+
+    function upTextLevel(count){
+        const countLevel = document.querySelector('#countLevel');
+        countLevel.textContent = `${count}`;
+    }
+ 
+    levelUp(parentElement, configLevel.widthUp, configLevel.countUp);
+    upTextLevel(configLevel.countUp);
+
+    function pauseBtnRender(parent){
+        const btnPause = document.createElement('button');
+        btnPause.classList.add('game-pause');
+        btnPause.innerHTML = `<img class="game-pause-image" src="./icons/attribute-icons/btn-pause/btn-pause.svg" alt="btn-pause">`;
+        parent.append(btnPause);
+
+        const imageBtnPause = document.querySelector('.game-pause-image');
+        btnPause.addEventListener("mouseover", (e) => {    
+            imageBtnPause.setAttribute("src", "./icons/attribute-icons/btn-pause/btn-pause-active.svg");      
+        });
+        btnPause.addEventListener("mouseout", (e) => {    
+            imageBtnPause.setAttribute("src", "./icons/attribute-icons/btn-pause/btn-pause.svg");      
+        });
+    }
+    pauseBtnRender(parentElement);
+
+
+
+});
 
