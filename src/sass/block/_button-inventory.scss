@@ -1,10 +1,11 @@
-.game-pause{
+.game-inventory{
     width: 45px;
     height: 45px;
     position: absolute;
-    right: 10px;
+    right: 70px;
     top: 10px;
     background-color: #ffffff00;
+    z-index: 25;
     cursor: pointer;
     &-image{
         width: 100%;

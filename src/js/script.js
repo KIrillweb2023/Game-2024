@@ -73,38 +73,44 @@ document.addEventListener('DOMContentLoaded', () =>{
     animatePers(document.querySelector('.block-rute-image'), imageState, "./icons/charater-icons", 250);
 
     document.addEventListener("keydown", (e) =>{
-        if(e.code === "ArrowRight"){
-            config.countX === 16 ? config.countX = 1 : config.countX++;
-        } else if(e.code === "ArrowLeft"){
-            config.countX === 1 ? config.countX = 16 : config.countX--;
-        } else if(e.code === "ArrowDown"){
-            config.countY === 8 ? config.countY = 1 : config.countY++;
-        } else if(e.code === "ArrowUp"){ 
-            config.countY === 1 ? config.countY = 8 : config.countY--;
-        }
+        if(!document.querySelector(".menu")){
+
+            if(e.code === "ArrowRight"){
+                config.countX === 16 ? config.countX = 1 : config.countX++;
+            } else if(e.code === "ArrowLeft"){
+                config.countX === 1 ? config.countX = 16 : config.countX--;
+            } else if(e.code === "ArrowDown"){
+                config.countY === 8 ? config.countY = 1 : config.countY++;
+            } else if(e.code === "ArrowUp"){ 
+                config.countY === 1 ? config.countY = 8 : config.countY--;
+            }
+        
+            if(config.countX === configRandomBlock.gridX && config.countY === configRandomBlock.gridY){
+                const renderRandomBlock = document.querySelector('.block')
+                if(renderRandomBlock){
+                    renderRandomBlock.remove();
+                }
     
-        if(config.countX === configRandomBlock.gridX && config.countY === configRandomBlock.gridY){
-            const renderRandomBlock = document.querySelector('.block')
-            if(renderRandomBlock){
-                renderRandomBlock.remove();
+                // const randomBlockMath = document.querySelector("#randomBlock").getAttribute('src');
+    
+                configLevel.widthUp += 30;
+                stateWidthActive(configLevel.widthUp);
+                if(configLevel.widthUp >= configLevel.maxWidthLevel){
+                    configLevel.widthUp = configLevel.maxWidthLevel - configLevel.widthUp;
+                    configLevel.countUp++;
+                   
+                    upTextLevel(configLevel.countUp);
+                    
+                }
+    
+                randomBlockRender(parentElement, imageRandomUrl, yellowStar, redStar, purpleStar, blueStar, orangeStar);
             }
+            settingsPositionX(element);
+            settingsPositionY(element);
 
-            // const randomBlockMath = document.querySelector("#randomBlock").getAttribute('src');
 
-            configLevel.widthUp += 30;
-            stateWidthActive(configLevel.widthUp);
-            if(configLevel.widthUp >= configLevel.maxWidthLevel){
-                configLevel.widthUp = configLevel.maxWidthLevel - configLevel.widthUp;
-                configLevel.countUp++;
-               
-                upTextLevel(configLevel.countUp);
-                
-            }
 
-            randomBlockRender(parentElement, imageRandomUrl, yellowStar, redStar, purpleStar, blueStar, orangeStar);
         }
-        settingsPositionX(element);
-        settingsPositionY(element);
     })
 
 
@@ -234,17 +240,121 @@ document.addEventListener('DOMContentLoaded', () =>{
         btnPause.innerHTML = `<img class="game-pause-image" src="./icons/attribute-icons/btn-pause/btn-pause.svg" alt="btn-pause">`;
         parent.append(btnPause);
 
-        const imageBtnPause = document.querySelector('.game-pause-image');
+        const imageBtnPause = document.querySelector(".game-pause-image");
+
         btnPause.addEventListener("mouseover", (e) => {    
             imageBtnPause.setAttribute("src", "./icons/attribute-icons/btn-pause/btn-pause-active.svg");      
         });
         btnPause.addEventListener("mouseout", (e) => {    
             imageBtnPause.setAttribute("src", "./icons/attribute-icons/btn-pause/btn-pause.svg");      
         });
+
     }
+
+    function inventoryBtnRender(parent){
+        const btnInventory = document.createElement('button');
+        btnInventory.classList.add('game-inventory');
+        btnInventory.innerHTML = `<img class="game-inventory-image" src="./icons/attribute-icons/inventory-icons/backpack-icon.svg" alt="btn-pause">`;
+        parent.append(btnInventory);
+
+        const imageInventory = document.querySelector(".game-inventory-image");
+
+        btnInventory.addEventListener("mouseover", (e) => {    
+            imageInventory.setAttribute("src", "./icons/attribute-icons/inventory-icons/backpack-active-icon.svg");      
+        });
+        btnInventory.addEventListener("mouseout", (e) => {    
+            imageInventory.setAttribute("src", "./icons/attribute-icons/inventory-icons/backpack-icon.svg");      
+        });
+
+    }
+    inventoryBtnRender(parentElement);
     pauseBtnRender(parentElement);
 
+    function menuGame(parent){
+        const menuBlock = document.createElement('div');
+        menuBlock.classList.add("menu");
+        menuBlock.innerHTML = `
+            <div class="menu__content">
+                <div class="menu__content_title">SlickRub</div>
 
+                <button class="menu__content_return btn">Play</button>
+                <button class="menu__content_settings btn">Settings</button>
+                <button class="menu__content_exit btn">Exit</button>
+            </div>
+        `;
+        parent.append(menuBlock);
+    }
+
+
+    const gamePauseBtn = document.querySelector('.game-pause');
+    gamePauseBtn.addEventListener('click', (e) =>{
+        menuGame(parentElement);
+
+        const gameBtnReturn = document.querySelector(".menu__content_return");
+        if(gameBtnReturn){
+            console.log(1)
+            gameBtnReturn.addEventListener('click', (e) =>{
+                const menu = document.querySelector(".menu");
+                const menuContent = document.querySelector(".menu__content");
+                menuContent.style.animation = "animate-menu-disabled 0.4s";
+
+
+                setTimeout(() =>{
+                    parentElement.removeChild(menu);
+                }, 300);
+                
+            })
+        }
+    })
+
+    function inventoryRender(parent){
+      
+        const inventoryWrapper = document.createElement('div');
+        inventoryWrapper.classList.add('inventory');
+        inventoryWrapper.innerHTML = `
+            <h3 class="inventory__title">Инвентарь</h3>
+           
+            <div class="inventory__wrapper">
+            
+            <img class="inventory__wrapper_close" src="./icons/attribute-icons/close-btn/btn-close.svg" alt="close">
+            
+            </div>
+        `;
+       
+
+        parent.append(inventoryWrapper);
+
+        for (let i = 1; i <= 4; i++) {
+            for (let j = 1; j <= 4; j++) {
+                const renderBlockInventory = document.createElement('img');
+                renderBlockInventory.classList.add('invent');
+                renderBlockInventory.setAttribute('src', './icons/attribute-icons/inventory-icons/cell.svg');
+                document.querySelector(".inventory__wrapper").append(renderBlockInventory);
+
+
+                renderBlockInventory.style.gridColumn = `${i} / 4`;
+                renderBlockInventory.style.gridRow = `${j} / 4`;
+            }
+        }
+    }
+    inventoryRender(parentElement);
+
+    
+   function openAndcloseInventory(){
+        const btnInventoryClick = document.querySelector('.game-inventory');
+        const closeInventoryMenu = document.querySelector(".inventory__wrapper_close");
+
+        btnInventoryClick.addEventListener('click', (e) =>{
+            const inventoryMenu = document.querySelector(".inventory");
+            inventoryMenu.classList.add('active');
+
+            closeInventoryMenu.addEventListener('click', (e) =>{
+                inventoryMenu.classList.remove('active');
+            })
+        })
+   }
+   openAndcloseInventory();
+  
 
 });
 

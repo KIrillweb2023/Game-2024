@@ -2,12 +2,50 @@
     0%{
         opacity: 0;
         top: 15px;
-        
-       
     }
     100%{
         opacity: 1;
         top: 0;
-        
     }
 }
+@keyframes animate-menu{
+    0%{
+        opacity: 0;
+        top: 60px;
+    }
+    100%{
+        opacity: 1;
+        top: 80px;
+    }
+}
+@keyframes animate-inventory{
+    0%{
+        opacity: 0;
+        top: 130px;
+    }
+    100%{
+        opacity: 1;
+        top: 150px;
+    }
+}
+@keyframes animate-menu-disabled{
+    0%{
+        opacity: 1;
+        top: 80px;
+    }
+    100%{
+        opacity: 0;
+        top: 60px;
+    }
+}
+
+@keyframes opacity {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+

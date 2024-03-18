@@ -1,0 +1,15 @@
+.game-pause{
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: #ffffff00;
+    z-index: 25;
+    cursor: pointer;
+    &-image{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
