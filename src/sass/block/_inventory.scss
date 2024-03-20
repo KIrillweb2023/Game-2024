@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: #000000e1;
+    background-color: #00000075;
     z-index: 30;
     display: none;
     transition: 0.3s all;
@@ -24,13 +24,13 @@
         border-radius: 10px;
         border: 10px solid #be6a09;
         display: grid;
-        grid-template-columns: repeat(auto-fill, 50px);
-        grid-template-rows: repeat(auto-fill, 50px);
+        grid-template-columns: repeat(auto-fill, 60px);
+        grid-template-rows: repeat(auto-fill, 60px);
         justify-content: center;
-        padding: 10px;
+        padding: 20px 10px;
         // animation: animate-menu 0.2s;
         .invent{
-            width: 50px;
+            width: 60px;
         }
         &_close{
             width: 40px;
@@ -39,6 +39,18 @@
             right: -30px;
             top: -30px;
             cursor: pointer;
+        }
+        .containerImage{
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &-img{
+                width: 35px;
+                height: 35px;
+                
+            }
         }
     }
     &__title{

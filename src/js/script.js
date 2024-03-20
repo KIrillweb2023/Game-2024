@@ -60,6 +60,9 @@ document.addEventListener('DOMContentLoaded', () =>{
         gridY: 0
     }
 
+    let xRen = 0;
+    let yRen = 1;
+
 
 
     const element = document.createElement('div');
@@ -87,11 +90,13 @@ document.addEventListener('DOMContentLoaded', () =>{
         
             if(config.countX === configRandomBlock.gridX && config.countY === configRandomBlock.gridY){
                 const renderRandomBlock = document.querySelector('.block')
+               
+                renderBlockInventory(document.querySelector("#randomBlock").getAttribute('src'), document.querySelector(".inventory__wrapper"), xRen, yRen);
+                 
+              
                 if(renderRandomBlock){
                     renderRandomBlock.remove();
                 }
-    
-                // const randomBlockMath = document.querySelector("#randomBlock").getAttribute('src');
     
                 configLevel.widthUp += 30;
                 stateWidthActive(configLevel.widthUp);
@@ -150,14 +155,19 @@ document.addEventListener('DOMContentLoaded', () =>{
         const atributesRandomBlock = document.querySelector("#randomBlock").getAttribute('src');
         
         if(atributesRandomBlock === yellow) {
+            block.setAttribute("id", "yellow-Star");
             animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathYellow , "./icons/star-icons/yellow-stars", 500);
         } else if(atributesRandomBlock === red){
+            block.setAttribute("id", "red-Star");
             animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathRed , "./icons/star-icons/red-stars", 500);
         } else if(atributesRandomBlock === purple) {
+            block.setAttribute("id", "purple-Star");
             animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathPurple , "./icons/star-icons/purple-stars", 500);
         } else if(atributesRandomBlock === blue) {
+            block.setAttribute("id", "blue-Star");
             animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathBlue , "./icons/star-icons/blue-stars", 500);
         } else if(atributesRandomBlock === orange) {
+            block.setAttribute("id", "orange-Star");
             animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathOrange , "./icons/star-icons/orange-stars", 500);
         }
     }
@@ -324,16 +334,16 @@ document.addEventListener('DOMContentLoaded', () =>{
 
         parent.append(inventoryWrapper);
 
-        for (let i = 1; i <= 4; i++) {
-            for (let j = 1; j <= 4; j++) {
+        for (let i = 1; i <= 3; i++) {
+            for (let j = 1; j <= 3; j++) {
                 const renderBlockInventory = document.createElement('img');
                 renderBlockInventory.classList.add('invent');
                 renderBlockInventory.setAttribute('src', './icons/attribute-icons/inventory-icons/cell.svg');
                 document.querySelector(".inventory__wrapper").append(renderBlockInventory);
 
 
-                renderBlockInventory.style.gridColumn = `${i} / 4`;
-                renderBlockInventory.style.gridRow = `${j} / 4`;
+                renderBlockInventory.style.gridColumn = `${i} / 3`;
+                renderBlockInventory.style.gridRow = `${j} / 3`;
             }
         }
     }
@@ -354,7 +364,34 @@ document.addEventListener('DOMContentLoaded', () =>{
         })
    }
    openAndcloseInventory();
-  
+
+
+    function renderBlockInventory(urlImage, parent){
+       
+       
+        if(yRen === 3 && xRen === 3){ 
+            console.log("yRen === 3 && xRen === 4")
+        } else {
+            const container = document.createElement("div");
+            container.classList.add("containerImage");
+            container.innerHTML = `<img class="containerImage-img" src="${urlImage}" alt="star-icon">`;
+            xRen++;
+           
+            if(xRen === 4){
+                xRen = xRen - 3;
+                container.style.gridColumn = `${xRen} / 3`;
+                yRen++;
+                container.style.gridRow = `${yRen} / 3`;    
+            }
+            console.log(xRen)
+            parent.append(container);
+            container.style.gridColumn = `${xRen} / 3`;
+            container.style.gridRow = `${yRen} / 3`;
+    
+        }
+
+    }
+    
 
 });
 
