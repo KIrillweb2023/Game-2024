@@ -1,15 +1,17 @@
 @import "./settings/settings";
 @import "./font/font";
 @import "./animation/animate";
-@import "./block/block-random";
-@import "./block/main-section";
-@import "./block/charater";
-@import "./block/level";
-@import "./block/button-pause";
-@import "./block/menuGame";
+@import "./block/canvas";
 @import "./block/button-inventory";
+@import "./block/button-pause";
+@import "./block/level";
+@import "./block/menuGame";
 @import "./block/inventory";
+@import "./block/block-random";
 
+body{ 
+    position: relative;
+}
 
 
 

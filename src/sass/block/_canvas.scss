@@ -1,0 +1,11 @@
+.canvas{
+    position: relative;
+}
+
+
+#game{
+    position: absolute;
+    z-index: 10;
+    height: 100vh;
+    width: 100%;
+}

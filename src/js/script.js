@@ -1,103 +1,166 @@
-document.addEventListener('DOMContentLoaded', () =>{
+
+const canvas = document.querySelector('canvas');
+const canvasContext = canvas.getContext('2d');
+const game = document.querySelector("#game");
+
+const body = document.body;
+
+
+
+const urlImage = new Image();
+urlImage.src = "../icons/star-icons/yellow-stars/one-star-yellow.svg";
+
+
+const image = new Image();
+image.src = "../img/map-bg/map-project.png";
+
+const playerImageDown = new Image();
+playerImageDown.src = "../icons/charates-icons/playerDown.png";
+
+const playerImageLeft = new Image();
+playerImageLeft.src = "../icons/charates-icons/playerLeft.png";
+
+const playerImageUp = new Image();
+playerImageUp.src = "../icons/charates-icons/playerUp.png";
+
+const playerImageRight = new Image();
+playerImageRight.src = "../icons/charates-icons/playerRight.png";
+
+let playerImage = "";
+playerImage = playerImageDown;
+
+
+canvas.width = 1366;
+canvas.height = 641;
+
+const config = {
+    image: image,
+    x: -515,
+    y: -230,
+}
+
+const configLevel = {
+    maxWidthLevel: 300,
+    widthUp: 0,
+    countUp: 0 
+}
+
+let xRen = 0;
+let yRen = 1;
+
+
+let limited = 0;
+
+const tabKeys = {
+    w: { pressed: false }, s: { pressed: false }, a: { pressed: false }, d: { pressed: false },
+}
+
+
+
+function Sprite (image, x, y){
+    canvasContext.drawImage(image, x, y);
+}
+
+
+const contextDraw = {
+    playerX: 0,
+    playerY: 0,
+    widthPlayer: playerImage.width / 4,
+    heightPlayer: playerImage.height,
+    canvasWidth: canvas.width / 2 - playerImage.width / 4 / 2,
+    canvasHeigh: canvas.height / 2 - playerImage.height / 2,
+}
+
+
+function animate(){
+    window.requestAnimationFrame(animate);
+    Sprite(config.image, config.x, config.y)
+    canvasContext.drawImage(
+        playerImage, 
+        contextDraw.playerX, 
+        contextDraw.playerY,
+        contextDraw.widthPlayer,
+        contextDraw.heightPlayer,
+        contextDraw.canvasWidth,
+        contextDraw.canvasHeigh,
+        contextDraw.widthPlayer,
+        contextDraw.heightPlayer
+    )
+    if (tabKeys.w.pressed){
+        if(config.y === -10){
+            config.y += 0
+        } else {
+            config.y += 5;
+        }
+        playerImage = playerImageUp;
+    } else if (tabKeys.a.pressed){
+        if(config.x === -240){
+            config.x += 0;
+        } else {
+            config.x += 5;
+        }
+        playerImage = playerImageLeft;
+    } else if (tabKeys.s.pressed) {
         
-    const parentElement = document.querySelector('#game'); // canvas
-    const imageState = [  'one.svg', 'one.svg', 'one.svg', 'one.svg', 'two.svg', 'three.svg' ];
+        if(config.y === -970){
+            config.y -= 0
+        } else {
+            config.y -= 5
+        }
+        playerImage = playerImageDown; 
+    } else if (tabKeys.d.pressed) {
+        if(config.x === -1885){
+            config.x -= 0
+        } else {
+            config.x -= 5;
+        }
+        playerImage = playerImageRight;
+    } 
+}
+animate();
 
-    const imageRandomUrl = [ 'red-stars/one-red-star.svg', 'yellow-stars/one-star-yellow.svg', 'blue-stars/one-blue-star.svg', 'orange-stars/one-orange-star.svg', 'purple-stars/one-star-purple.svg' ];
 
-    const urlStarsPath = {
-        pathYellow: [ 'one-star-yellow.svg', 'one-star-yellow.svg', 'two-star-yellow.svg'],
-        pathRed: [ 'one-red-star.svg', 'one-red-star.svg', 'two-red-star.svg'],
-        pathPurple: [ 'one-star-purple.svg', 'one-star-purple.svg', 'two-star-purple.svg' ],
-        pathBlue: [ 'one-blue-star.svg', 'one-blue-star.svg', 'two-blue-star.svg' ],
-        pathOrange: [ 'one-orange-star.svg', 'one-orange-star.svg', 'two-orange-star.svg' ]
+window.addEventListener('keydown', (e) =>{
+    if(e.code === 'KeyW'){
+        tabKeys.w.pressed = true;
+    } else if (e.code === 'KeyS'){
+        tabKeys.s.pressed = true;
+        // contextDraw.playerX += 48;
+        // if(contextDraw.playerX === 192){
+        //     contextDraw.playerX -= 192;
+        // } 
+    } else if (e.code === 'KeyA') {
+        tabKeys.a.pressed = true;
+    } else if (e.code === 'KeyD'){
+        tabKeys.d.pressed = true;
+    }
+})
+// x: -1440 and -1730
+// y: -120 and -300
+
+window.addEventListener('keyup', (e) =>{
+    if(e.code === 'KeyW'){
+        tabKeys.w.pressed = false;
+        setTimeout(() =>{ playerImage = playerImageLeft;
+            setTimeout(() =>{ playerImage = playerImageDown }, 400)
+        }, 200)
+    } else if (e.code === 'KeyS'){
+        tabKeys.s.pressed = false;
+    } else if (e.code === 'KeyA') {
+        tabKeys.a.pressed = false;
+        playerImage = playerImageDown 
+    } else if (e.code === 'KeyD'){
+        tabKeys.d.pressed = false;
+        playerImage = playerImageDown;
     }
 
+    if(e.code === "KeyW" || e.code === "KeyS" || e.code === "KeyA" || e.code === "KeyD"){
+       
 
-    const yellowStar = './icons/star-icons/yellow-stars/one-star-yellow.svg';
-    const redStar = './icons/star-icons/red-stars/one-red-star.svg';
-    const purpleStar = './icons/star-icons/purple-stars/one-star-purple.svg';
-    const blueStar = './icons/star-icons/blue-stars/one-blue-star.svg';
-    const orangeStar = './icons/star-icons/orange-stars/one-orange-star.svg';
-
-
-
-    const items = []; // все елементы
-    const numberGridY = [1, 2, 3, 4, 5, 6, 7, 8];
-    const numberGridX = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-
-
-    const configInterface = {
-        gameScore: 0,  //Счет
-        // Типы кристаллов: 
-        greenStars: 0,
-        yellowStars: 0,
-        redStars: 0,
-
-    }
-    const config = {
-        width: 80,
-        height: 80,
-        countX: 1,
-        countY: 1
-    }   
-
-
-    const configLevel = {
-        maxWidthLevel: 300,
-        widthUp: 0,
-        countUp: 0 
-    }
-
-
-    const maxColAndRow = {
-        columnMax: 16,
-        rowMax: 8
-    }
-
-    const configRandomBlock = {
-        gridX: 0,
-        gridY: 0
-    }
-
-    let xRen = 0;
-    let yRen = 1;
-
-
-
-    const element = document.createElement('div');
-    element.classList.add('block-rute');
-    element.innerHTML = `<img class="block-rute-image" src="./icons/charater-icons/one.svg" alt="charaters">`;
-    parentElement.append(element);
-
-    element.style.width = `${config.width}px`;
-    element.style.height = `${config.height}px`;
-
-    animatePers(document.querySelector('.block-rute-image'), imageState, "./icons/charater-icons", 250);
-
-    document.addEventListener("keydown", (e) =>{
-        if(!document.querySelector(".menu")){
-
-            if(e.code === "ArrowRight"){
-                config.countX === 16 ? config.countX = 1 : config.countX++;
-            } else if(e.code === "ArrowLeft"){
-                config.countX === 1 ? config.countX = 16 : config.countX--;
-            } else if(e.code === "ArrowDown"){
-                config.countY === 8 ? config.countY = 1 : config.countY++;
-            } else if(e.code === "ArrowUp"){ 
-                config.countY === 1 ? config.countY = 8 : config.countY--;
-            }
-        
-            if(config.countX === configRandomBlock.gridX && config.countY === configRandomBlock.gridY){
-                const renderRandomBlock = document.querySelector('.block')
-               
-                renderBlockInventory(document.querySelector("#randomBlock").getAttribute('src'), document.querySelector(".inventory__wrapper"), xRen, yRen);
-                 
-              
-                if(renderRandomBlock){
-                    renderRandomBlock.remove();
-                }
-    
+        if((config.x <= -1440 && config.x >= -1730) && (config.y <= -120 && config.y >= -300)){
+            
+            limited += 1;
+            if(limited < 2){
                 configLevel.widthUp += 30;
                 stateWidthActive(configLevel.widthUp);
                 if(configLevel.widthUp >= configLevel.maxWidthLevel){
@@ -107,198 +170,113 @@ document.addEventListener('DOMContentLoaded', () =>{
                     upTextLevel(configLevel.countUp);
                     
                 }
-    
-                randomBlockRender(parentElement, imageRandomUrl, yellowStar, redStar, purpleStar, blueStar, orangeStar);
-            }
-            settingsPositionX(element);
-            settingsPositionY(element);
-
-
-
-        }
-    })
-
-
-
-    function settingsPositionX(elem){ elem.style.gridColumn = `${config.countX} / ${maxColAndRow.columnMax}`; }
-    function settingsPositionY(elem){ elem.style.gridRow = `${config.countY} / ${maxColAndRow.rowMax}`; }
-    settingsPositionX(element);
-    settingsPositionY(element);
-
-   
-
-    function randomBlockRender(parent, arr, yellow, red, purple, blue, orange){
-        let randomX = Math.floor(Math.random() * numberGridX.length);
-        let randomY = Math.floor(Math.random() * numberGridY.length);
-
-        let id = Math.floor(Math.random() * arr.length);
-
-        randomX === 0 ? randomX++ : randomX;
-        randomY === 0 ? randomY++ : randomY;
-
-        configRandomBlock.gridX = randomX;
-        configRandomBlock.gridY = randomY;
-
-    
-      
-        const block = document.createElement('div');
-        block.classList.add('block');
-        block.innerHTML = `<img id="randomBlock" class="block-random" src="./icons/star-icons/${arr[id]}">`;
-        parent.append(block);
-    
-        block.style.gridColumn = `${configRandomBlock.gridX} / ${maxColAndRow.columnMax}`;
-        block.style.gridRow = `${configRandomBlock.gridY} / ${maxColAndRow.rowMax}`;
-
-
-
-
-        const atributesRandomBlock = document.querySelector("#randomBlock").getAttribute('src');
-        
-        if(atributesRandomBlock === yellow) {
-            block.setAttribute("id", "yellow-Star");
-            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathYellow , "./icons/star-icons/yellow-stars", 500);
-        } else if(atributesRandomBlock === red){
-            block.setAttribute("id", "red-Star");
-            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathRed , "./icons/star-icons/red-stars", 500);
-        } else if(atributesRandomBlock === purple) {
-            block.setAttribute("id", "purple-Star");
-            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathPurple , "./icons/star-icons/purple-stars", 500);
-        } else if(atributesRandomBlock === blue) {
-            block.setAttribute("id", "blue-Star");
-            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathBlue , "./icons/star-icons/blue-stars", 500);
-        } else if(atributesRandomBlock === orange) {
-            block.setAttribute("id", "orange-Star");
-            animatePers(document.querySelector("#randomBlock"), urlStarsPath.pathOrange , "./icons/star-icons/orange-stars", 500);
-        }
-    }
-   
-    randomBlockRender(parentElement, imageRandomUrl, yellowStar, redStar, purpleStar, blueStar, orangeStar);
-
-
-   
-    function animatePers(elem, arr, strUrl, configSeconds){
-        let indificator = 0;
-        setInterval(()=>{
-            if(indificator < arr.length){
-                elem.setAttribute('src', `${strUrl}/${arr[indificator]}`);
-                indificator = indificator + 1;
-                if(indificator === arr.length){
-                    return indificator = 0;
-                }
-            }
-        }, configSeconds);
-    }
-
-    function renderLangscape(gridX){ 
-        for (let i = 1; i <= gridX; i++) {
-            for (let j = 1; j <= 8; j++) {
-                const renderBlock = document.createElement('img');
-                renderBlock.classList.add('ground');
-                renderBlock.setAttribute('src', './icons/langstone-icons/grass-ground.svg');
-                parentElement.append(renderBlock);
-
-
-                // сделал динамическое подставление итератора в стили, иначе рендрит с хер чем попало
-                renderBlock.style.gridColumn = `${i} / ${maxColAndRow.columnMax}`;
-                renderBlock.style.gridRow = `${j} / ${maxColAndRow.rowMax}`;
-
-
-                j === 8 ? renderBlock.setAttribute('src', './icons/langstone-icons/bottom-ground.svg') : j;
-                i === 1 ?  renderBlock.setAttribute('src', './icons/langstone-icons/left-ground.svg') : i;
-                j === 3 && i === 5 ? renderBlock.setAttribute('src', './icons/langstone-icons/grass-ground-flowers.svg') : i;
-                j === 7 && i === 12 ? renderBlock.setAttribute('src', './icons/langstone-icons/grass-ground-flowers.svg') : i;
-                j === 2 && i === 16 ? renderBlock.setAttribute('src', './icons/langstone-icons/grass-ground-flowers.svg') : i;
-                j === 8 && i === 1 ? renderBlock.setAttribute('src', './icons/langstone-icons/left-bottom-ground.svg') : i;
+                renderBlockInventory("../icons/star-icons/yellow-stars/one-star-yellow.svg", document.querySelector(".inventory__wrapper"), xRen, yRen);
                 
-            }
+            } 
+            
+            
+        } else {
+            // if(limited != 0){
+                limited = 0;
+            // }
+           
         }
+        console.log(limited);
     }
 
-    renderLangscape(maxColAndRow.columnMax);
+    
+  
+})
+
+
+//1.0
+
+
+function inventoryBtnRender(parent){
+    const btnInventory = document.createElement('button');
+    btnInventory.classList.add('game-inventory');
+    btnInventory.innerHTML = `<img class="game-inventory-image" src="./icons/attribute-icons/inventory-icons/backpack-icon.svg" alt="btn-pause">`;
+    parent.append(btnInventory);
+
+    const imageInventory = document.querySelector(".game-inventory-image");
+
+    btnInventory.addEventListener("mouseover", (e) => {    
+        imageInventory.setAttribute("src", "./icons/attribute-icons/inventory-icons/backpack-active-icon.svg");      
+    });
+    btnInventory.addEventListener("mouseout", (e) => {    
+        imageInventory.setAttribute("src", "./icons/attribute-icons/inventory-icons/backpack-icon.svg");      
+    });
+
+}
+inventoryBtnRender(body);
+
+function pauseBtnRender(parent){
+    const btnPause = document.createElement('button');
+    btnPause.classList.add('game-pause');
+    btnPause.innerHTML = `<img class="game-pause-image" src="./icons/attribute-icons/btn-pause/btn-pause.svg" alt="btn-pause">`;
+    parent.append(btnPause);
+
+    const imageBtnPause = document.querySelector(".game-pause-image");
+
+    btnPause.addEventListener("mouseover", (e) => {    
+        imageBtnPause.setAttribute("src", "./icons/attribute-icons/btn-pause/btn-pause-active.svg");      
+    });
+    btnPause.addEventListener("mouseout", (e) => {    
+        imageBtnPause.setAttribute("src", "./icons/attribute-icons/btn-pause/btn-pause.svg");      
+    });
+
+}
+
+pauseBtnRender(body);
+
+
+function levelUp(parent, widthLevel, count){
+    const levelBlock = document.createElement("div");
+    levelBlock.classList.add('wrapper');
+    levelBlock.innerHTML = ` 
+        <h4 class="wrapper__level">LEVEL <span id="countLevel">${count}</span></h4>
+        <div class="wrapper__progress"></div>
+    `;
+    parent.append(levelBlock);
+
+    const levelProgress = document.querySelector(".wrapper__progress");
+    levelProgress.style.width = `${widthLevel}px`;
+}
+
+function stateWidthActive(widthLevel){
+    const levelProgress = document.querySelector(".wrapper__progress");
+    levelProgress.style.width = `${widthLevel}px`;
+}
+
+function upTextLevel(count){
+    const countLevel = document.querySelector('#countLevel');
+    countLevel.textContent = `${count}`;
+}
+
+levelUp(body, configLevel.widthUp, configLevel.countUp);
 
 
 
-    function levelUp(parent, widthLevel, count){
-        const levelBlock = document.createElement("div");
-        levelBlock.classList.add('wrapper');
-        levelBlock.innerHTML = ` 
-            <h4 class="wrapper__level">LEVEL <span id="countLevel">${count}</span></h4>
-            <div class="wrapper__progress"></div>
-        `;
-        parent.append(levelBlock);
 
-        const levelProgress = document.querySelector(".wrapper__progress");
-        levelProgress.style.width = `${widthLevel}px`;
-    }
+function menuGame(parent){
+    const menuBlock = document.createElement('div');
+    menuBlock.classList.add("menu");
+    menuBlock.innerHTML = `
+        <div class="menu__content">
+            <div class="menu__content_title">SlickRub</div>
 
-    function stateWidthActive(widthLevel){
-        const levelProgress = document.querySelector(".wrapper__progress");
-        levelProgress.style.width = `${widthLevel}px`;
-    }
-
-    function upTextLevel(count){
-        const countLevel = document.querySelector('#countLevel');
-        countLevel.textContent = `${count}`;
-    }
- 
-    levelUp(parentElement, configLevel.widthUp, configLevel.countUp);
-    upTextLevel(configLevel.countUp);
-
-    function pauseBtnRender(parent){
-        const btnPause = document.createElement('button');
-        btnPause.classList.add('game-pause');
-        btnPause.innerHTML = `<img class="game-pause-image" src="./icons/attribute-icons/btn-pause/btn-pause.svg" alt="btn-pause">`;
-        parent.append(btnPause);
-
-        const imageBtnPause = document.querySelector(".game-pause-image");
-
-        btnPause.addEventListener("mouseover", (e) => {    
-            imageBtnPause.setAttribute("src", "./icons/attribute-icons/btn-pause/btn-pause-active.svg");      
-        });
-        btnPause.addEventListener("mouseout", (e) => {    
-            imageBtnPause.setAttribute("src", "./icons/attribute-icons/btn-pause/btn-pause.svg");      
-        });
-
-    }
-
-    function inventoryBtnRender(parent){
-        const btnInventory = document.createElement('button');
-        btnInventory.classList.add('game-inventory');
-        btnInventory.innerHTML = `<img class="game-inventory-image" src="./icons/attribute-icons/inventory-icons/backpack-icon.svg" alt="btn-pause">`;
-        parent.append(btnInventory);
-
-        const imageInventory = document.querySelector(".game-inventory-image");
-
-        btnInventory.addEventListener("mouseover", (e) => {    
-            imageInventory.setAttribute("src", "./icons/attribute-icons/inventory-icons/backpack-active-icon.svg");      
-        });
-        btnInventory.addEventListener("mouseout", (e) => {    
-            imageInventory.setAttribute("src", "./icons/attribute-icons/inventory-icons/backpack-icon.svg");      
-        });
-
-    }
-    inventoryBtnRender(parentElement);
-    pauseBtnRender(parentElement);
-
-    function menuGame(parent){
-        const menuBlock = document.createElement('div');
-        menuBlock.classList.add("menu");
-        menuBlock.innerHTML = `
-            <div class="menu__content">
-                <div class="menu__content_title">SlickRub</div>
-
-                <button class="menu__content_return btn">Play</button>
-                <button class="menu__content_settings btn">Settings</button>
-                <button class="menu__content_exit btn">Exit</button>
-            </div>
-        `;
-        parent.append(menuBlock);
-    }
+            <button class="menu__content_return btn">Play</button>
+            <button class="menu__content_settings btn">Settings</button>
+            <button class="menu__content_exit btn">Exit</button>
+        </div>
+    `;
+    parent.append(menuBlock);
+}
 
 
     const gamePauseBtn = document.querySelector('.game-pause');
     gamePauseBtn.addEventListener('click', (e) =>{
-        menuGame(parentElement);
+        menuGame(body);
 
         const gameBtnReturn = document.querySelector(".menu__content_return");
         if(gameBtnReturn){
@@ -310,12 +288,13 @@ document.addEventListener('DOMContentLoaded', () =>{
 
 
                 setTimeout(() =>{
-                    parentElement.removeChild(menu);
+                    body.removeChild(menu);
                 }, 300);
                 
             })
         }
     })
+
 
     function inventoryRender(parent){
       
@@ -323,11 +302,8 @@ document.addEventListener('DOMContentLoaded', () =>{
         inventoryWrapper.classList.add('inventory');
         inventoryWrapper.innerHTML = `
             <h3 class="inventory__title">Инвентарь</h3>
-           
             <div class="inventory__wrapper">
-            
-            <img class="inventory__wrapper_close" src="./icons/attribute-icons/close-btn/btn-close.svg" alt="close">
-            
+                <img class="inventory__wrapper_close" src="./icons/attribute-icons/close-btn/btn-close.svg" alt="close">
             </div>
         `;
        
@@ -347,10 +323,10 @@ document.addEventListener('DOMContentLoaded', () =>{
             }
         }
     }
-    inventoryRender(parentElement);
+    inventoryRender(body);
 
-    
-   function openAndcloseInventory(){
+
+    function openAndcloseInventory(){
         const btnInventoryClick = document.querySelector('.game-inventory');
         const closeInventoryMenu = document.querySelector(".inventory__wrapper_close");
 
@@ -365,33 +341,29 @@ document.addEventListener('DOMContentLoaded', () =>{
    }
    openAndcloseInventory();
 
-
-    function renderBlockInventory(urlImage, parent){
+   function renderBlockInventory(urlImage, parent){
+    if(yRen === 3 && xRen === 3){ 
+        console.log("yRen === 3 && xRen === 4")
+    } else {
+        const container = document.createElement("div");
+        container.classList.add("containerImage");
+        container.innerHTML = `<img class="containerImage-img" src="${urlImage}" alt="star-icon">`;
+        xRen++;
        
-       
-        if(yRen === 3 && xRen === 3){ 
-            console.log("yRen === 3 && xRen === 4")
-        } else {
-            const container = document.createElement("div");
-            container.classList.add("containerImage");
-            container.innerHTML = `<img class="containerImage-img" src="${urlImage}" alt="star-icon">`;
-            xRen++;
-           
-            if(xRen === 4){
-                xRen = xRen - 3;
-                container.style.gridColumn = `${xRen} / 3`;
-                yRen++;
-                container.style.gridRow = `${yRen} / 3`;    
-            }
-            console.log(xRen)
-            parent.append(container);
+        if(xRen === 4){
+            xRen = xRen - 3;
             container.style.gridColumn = `${xRen} / 3`;
-            container.style.gridRow = `${yRen} / 3`;
-    
+            yRen++;
+            container.style.gridRow = `${yRen} / 3`;    
         }
+       
+        parent.append(container);
+        container.style.gridColumn = `${xRen} / 3`;
+        container.style.gridRow = `${yRen} / 3`;
 
     }
-    
 
-});
+}
+
+
 

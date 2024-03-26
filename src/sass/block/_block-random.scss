@@ -1,13 +1,13 @@
 .block{
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    // left: 100px;
+    // top: 30px;
+    z-index: 5;
     &-random{
-        width: 30px;
-        height: 30px;
-        position: relative;
+        width: 100%;
+        height: 100%;
         animation: animate-position-random 1s;
     }
 }
