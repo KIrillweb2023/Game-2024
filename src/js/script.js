@@ -1,11 +1,8 @@
-
 const canvas = document.querySelector('canvas');
 const canvasContext = canvas.getContext('2d');
 const game = document.querySelector("#game");
 
 const body = document.body;
-
-
 
 const urlImage = new Image();
 urlImage.src = "../icons/star-icons/yellow-stars/one-star-yellow.svg";
@@ -47,8 +44,6 @@ const configLevel = {
 
 let xRen = 0;
 let yRen = 1;
-
-
 let limited = 0;
 
 const tabKeys = {
@@ -56,66 +51,72 @@ const tabKeys = {
 }
 
 
+class CharaterConfig {
+    constructor ({ image, widthX, heightY, widthPlayer, heightPlayer, positionX, positionY }){
+        this.image = image;
+        this.widthX = widthX;
+        this.heightY = heightY;
+        this.widthPlayer = widthPlayer;
+        this.heightPlayer = heightPlayer;
+        this.positionX = positionX;
+        this.positionY = positionY;
+    }   
+
+    draw(canvas){
+        canvas.drawImage(
+            this.image,
+            this.widthX,
+            this.heightY,
+            this.widthPlayer,
+            this.heightPlayer,
+            this.positionX,
+            this.positionY,
+            this.widthPlayer,
+            this.heightPlayer,
+        )
+    }
+}
+
+const charater = new CharaterConfig({
+    image: playerImage,
+    widthX: 0,
+    heightY: 0,
+    widthPlayer: playerImage.width / 4,
+    heightPlayer: playerImage.height,
+    positionX: canvas.width / 2 - playerImage.width / 4 / 2,
+    positionY: canvas.height / 2 - playerImage.height / 2,
+    widthPlayer: playerImage.width / 4,
+    heightPlayer: playerImage.height,
+});
+
 
 function Sprite (image, x, y){
     canvasContext.drawImage(image, x, y);
 }
 
-
-const contextDraw = {
-    playerX: 0,
-    playerY: 0,
-    widthPlayer: playerImage.width / 4,
-    heightPlayer: playerImage.height,
-    canvasWidth: canvas.width / 2 - playerImage.width / 4 / 2,
-    canvasHeigh: canvas.height / 2 - playerImage.height / 2,
-}
+// a: -695(x) and -200(y)
 
 
 function animate(){
     window.requestAnimationFrame(animate);
     Sprite(config.image, config.x, config.y)
-    canvasContext.drawImage(
-        playerImage, 
-        contextDraw.playerX, 
-        contextDraw.playerY,
-        contextDraw.widthPlayer,
-        contextDraw.heightPlayer,
-        contextDraw.canvasWidth,
-        contextDraw.canvasHeigh,
-        contextDraw.widthPlayer,
-        contextDraw.heightPlayer
-    )
+    charater.draw(canvasContext);
     if (tabKeys.w.pressed){
-        if(config.y === -10){
-            config.y += 0
-        } else {
-            config.y += 5;
-        }
-        playerImage = playerImageUp;
+        config.y === -10 ? config.y += 0 : config.y += 5;
+        charater.image = playerImageUp;
     } else if (tabKeys.a.pressed){
-        if(config.x === -240){
-            config.x += 0;
-        } else {
-            config.x += 5;
-        }
-        playerImage = playerImageLeft;
+        config.x === -240 ? config.x += 0 : config.x += 5;
+        charater.image = playerImageLeft;
     } else if (tabKeys.s.pressed) {
-        
-        if(config.y === -970){
-            config.y -= 0
-        } else {
-            config.y -= 5
-        }
-        playerImage = playerImageDown; 
+        config.y === -970 ? config.y -= 0 : config.y -= 5;
+        charater.image = playerImageDown; 
     } else if (tabKeys.d.pressed) {
-        if(config.x === -1885){
-            config.x -= 0
-        } else {
-            config.x -= 5;
-        }
-        playerImage = playerImageRight;
+        config.x === -1885 ? config.x -= 0 : config.x -= 5;
+        charater.image = playerImageRight;
     } 
+
+    if(tabKeys.w.pressed || tabKeys.a.pressed || tabKeys.s.pressed || tabKeys.d.pressed){} 
+    else { charater.image = playerImageDown }
 }
 animate();
 
@@ -125,40 +126,26 @@ window.addEventListener('keydown', (e) =>{
         tabKeys.w.pressed = true;
     } else if (e.code === 'KeyS'){
         tabKeys.s.pressed = true;
-        // contextDraw.playerX += 48;
-        // if(contextDraw.playerX === 192){
-        //     contextDraw.playerX -= 192;
-        // } 
     } else if (e.code === 'KeyA') {
         tabKeys.a.pressed = true;
     } else if (e.code === 'KeyD'){
         tabKeys.d.pressed = true;
     }
 })
-// x: -1440 and -1730
-// y: -120 and -300
 
 window.addEventListener('keyup', (e) =>{
     if(e.code === 'KeyW'){
         tabKeys.w.pressed = false;
-        setTimeout(() =>{ playerImage = playerImageLeft;
-            setTimeout(() =>{ playerImage = playerImageDown }, 400)
-        }, 200)
     } else if (e.code === 'KeyS'){
         tabKeys.s.pressed = false;
     } else if (e.code === 'KeyA') {
         tabKeys.a.pressed = false;
-        playerImage = playerImageDown 
     } else if (e.code === 'KeyD'){
         tabKeys.d.pressed = false;
-        playerImage = playerImageDown;
     }
 
     if(e.code === "KeyW" || e.code === "KeyS" || e.code === "KeyA" || e.code === "KeyD"){
-       
-
         if((config.x <= -1440 && config.x >= -1730) && (config.y <= -120 && config.y >= -300)){
-            
             limited += 1;
             if(limited < 2){
                 configLevel.widthUp += 30;
@@ -171,21 +158,14 @@ window.addEventListener('keyup', (e) =>{
                     
                 }
                 renderBlockInventory("../icons/star-icons/yellow-stars/one-star-yellow.svg", document.querySelector(".inventory__wrapper"), xRen, yRen);
-                
             } 
-            
-            
         } else {
             // if(limited != 0){
                 limited = 0;
             // }
            
         }
-        console.log(limited);
     }
-
-    
-  
 })
 
 
