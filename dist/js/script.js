@@ -50,6 +50,29 @@ const tabKeys = {
     w: { pressed: false }, s: { pressed: false }, a: { pressed: false }, d: { pressed: false },
 }
 
+class Map {
+    constructor({position, image}){
+        this.position = position;
+        this.image = image;
+    }
+
+    rendering (canvas) {
+        canvas.drawImage(
+            this.image,
+            this.position.x,
+            this.position.y
+        )
+    }
+}
+
+const mapUsulition = new Map({
+    image: config.image,
+    position: {
+        x: -515,
+        y: -230
+    }
+})
+
 
 class CharaterConfig {
     constructor ({ position, image, frames = {max: 1} }){
@@ -83,7 +106,7 @@ class CharaterConfig {
                 this.frames.elapsed++
             }
     
-            if(this.frames.elapsed % 10 === 0){
+            if(this.frames.elapsed % 8 === 0){
                 if(this.frames.value < this.frames.max - 1) this.frames.value++
                 else this.frames.value = 0;
             }
@@ -103,29 +126,21 @@ const charater = new CharaterConfig({
     animate: false
 });
 
-
-function Sprite (image, x, y){
-    canvasContext.drawImage(image, x, y);
-}
-
-// a: -695(x) and -200(y)
-
-
 function animate(){
     window.requestAnimationFrame(animate);
-    Sprite(config.image, config.x, config.y)
+    mapUsulition.rendering(canvasContext);
     charater.draw(canvasContext);
     if (tabKeys.w.pressed){
-        config.y === -10 ? config.y += 0 : config.y += 5;
+        mapUsulition.position.y === -10 ? mapUsulition.position.y += 0 : mapUsulition.position.y += 5;
         charater.image = playerImageUp;
     } else if (tabKeys.a.pressed){
-        config.x === -240 ? config.x += 0 : config.x += 5;
+        mapUsulition.position.x === -240 ? mapUsulition.position.x += 0 : mapUsulition.position.x += 5;
         charater.image = playerImageLeft;
     } else if (tabKeys.s.pressed) {
-        config.y === -970 ? config.y -= 0 : config.y -= 5;
+        mapUsulition.position.y === -970 ? mapUsulition.position.y -= 0 : mapUsulition.position.y -= 5;
         charater.image = playerImageDown; 
     } else if (tabKeys.d.pressed) {
-        config.x === -1885 ? config.x -= 0 : config.x -= 5;
+        mapUsulition.position.x === -1885 ? mapUsulition.position.x -= 0 : mapUsulition.position.x -= 5;
         charater.image = playerImageRight;
     } 
 
@@ -164,7 +179,6 @@ window.addEventListener('keyup', (e) =>{
     }
 
     if(e.code === "KeyW" || e.code === "KeyS" || e.code === "KeyA" || e.code === "KeyD"){
-        // charater.animate = false
         if((config.x <= -1440 && config.x >= -1730) && (config.y <= -120 && config.y >= -300)){
            
             limited += 1;
