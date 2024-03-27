@@ -52,41 +52,55 @@ const tabKeys = {
 
 
 class CharaterConfig {
-    constructor ({ image, widthX, heightY, widthPlayer, heightPlayer, positionX, positionY }){
+    constructor ({ position, image, frames = {max: 1} }){
+        this.position = position;
         this.image = image;
-        this.widthX = widthX;
-        this.heightY = heightY;
-        this.widthPlayer = widthPlayer;
-        this.heightPlayer = heightPlayer;
-        this.positionX = positionX;
-        this.positionY = positionY;
+        this.frames = {...frames, value: 0, elapsed: 0};
+
+        this.image.onload = () => {
+            this.width = this.image.width / this.frames.max;
+            this.height = this.image.height / this.frames.max;
+        }
+
+        this.animate = false;
     }   
 
     draw(canvas){
         canvas.drawImage(
             this.image,
-            this.widthX,
-            this.heightY,
-            this.widthPlayer,
-            this.heightPlayer,
-            this.positionX,
-            this.positionY,
-            this.widthPlayer,
-            this.heightPlayer,
+            this.frames.value * this.width,
+            0,
+            this.image.width / this.frames.max,
+            this.image.height,
+            this.position.x,
+            this.position.y,
+            this.image.width / this.frames.max,
+            this.image.height
         )
+
+        if(this.animate){
+            if(this.frames.max > 1){
+                this.frames.elapsed++
+            }
+    
+            if(this.frames.elapsed % 10 === 0){
+                if(this.frames.value < this.frames.max - 1) this.frames.value++
+                else this.frames.value = 0;
+            }
+        }  
     }
 }
 
 const charater = new CharaterConfig({
+    position: {
+        x: canvas.width / 2 - playerImage.width / 4 / 2,
+        y: canvas.height / 2 - playerImage.height / 2
+    },
     image: playerImage,
-    widthX: 0,
-    heightY: 0,
-    widthPlayer: playerImage.width / 4,
-    heightPlayer: playerImage.height,
-    positionX: canvas.width / 2 - playerImage.width / 4 / 2,
-    positionY: canvas.height / 2 - playerImage.height / 2,
-    widthPlayer: playerImage.width / 4,
-    heightPlayer: playerImage.height,
+    frames: {
+        max: 4
+    },
+    animate: false
 });
 
 
@@ -116,7 +130,7 @@ function animate(){
     } 
 
     if(tabKeys.w.pressed || tabKeys.a.pressed || tabKeys.s.pressed || tabKeys.d.pressed){} 
-    else { charater.image = playerImageDown }
+    else { charater.image = playerImageDown ; charater.animate = false ; charater.frames.value = 0}
 }
 animate();
 
@@ -131,6 +145,11 @@ window.addEventListener('keydown', (e) =>{
     } else if (e.code === 'KeyD'){
         tabKeys.d.pressed = true;
     }
+
+    if(e.code === "KeyW" || e.code === "KeyS" || e.code === "KeyA" || e.code === "KeyD"){
+        charater.animate = true;
+    }
+
 })
 
 window.addEventListener('keyup', (e) =>{
@@ -145,7 +164,9 @@ window.addEventListener('keyup', (e) =>{
     }
 
     if(e.code === "KeyW" || e.code === "KeyS" || e.code === "KeyA" || e.code === "KeyD"){
+        // charater.animate = false
         if((config.x <= -1440 && config.x >= -1730) && (config.y <= -120 && config.y >= -300)){
+           
             limited += 1;
             if(limited < 2){
                 configLevel.widthUp += 30;
